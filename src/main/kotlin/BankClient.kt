@@ -2,6 +2,9 @@ data class BankClient(
     val balance: AccountBalance
 ) {
     fun deposit(amount: Int) : BankClient = BankClient(balance.addAmount(amount))
+    fun withdraw(amount: Int) {
+
+    }
 }
 
 data class AccountBalance(
