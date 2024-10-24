@@ -7,5 +7,10 @@ data class BankClient(
 data class AccountBalance(
     val amount: Int
 ) {
-    fun addAmount(amount: Int) : AccountBalance = AccountBalance(this.amount + amount)
+    fun addAmount(amount: Int) : AccountBalance {
+        if (amount < 0) {
+            return this
+        }
+        return AccountBalance(this.amount + amount)
+    }
 }
