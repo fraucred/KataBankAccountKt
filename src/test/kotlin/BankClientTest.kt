@@ -50,4 +50,16 @@ class BankClientTest {
         // THEN
         assertEquals(BankClient(AccountBalance(0)), bankClientAfterDeposit)
     }
+
+    @Test
+    fun shouldDepositMoneyInBankAccountWithNegativeBalance() {
+        // GIVEN
+        val bankClientWithNegativeBalance = BankClient(AccountBalance(-1))
+
+        // WHEN
+        val bankClientAfterDeposit = bankClientWithNegativeBalance.deposit(1)
+
+        // THEN
+        assertEquals(BankClient(AccountBalance(0)), bankClientAfterDeposit)
+    }
 }
