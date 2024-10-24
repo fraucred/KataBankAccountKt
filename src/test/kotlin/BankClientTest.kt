@@ -6,12 +6,12 @@ class BankClientTest {
     @Test
     fun shouldDepositMoneyInEmptyBankAccount() {
         // GIVEN
-        val bankClient = BankClient(0)
+        val bankClient = BankClient(AccountBalance(0))
 
         // WHEN
-        bankClient.deposit(1)
+        val bankClientWithOneInBalance = bankClient.deposit(1)
 
         // THEN
-        assertEquals(1, bankClient.balance)
+        assertEquals(BankClient(AccountBalance(1)), bankClientWithOneInBalance)
     }
 }
