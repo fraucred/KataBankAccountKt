@@ -82,6 +82,18 @@ class BankClientTest {
             // THEN
             assertEquals(BankClient(AccountBalance(0)), bankClientWithZeroInBalance)
         }
+
+        @Test
+        fun shouldWithdrawSomeMoneyFromBankAccountWithTwoInBalance() {
+            // GIVEN
+            val bankClientWithTwoInBalance = BankClient(AccountBalance(2))
+
+            // WHEN
+            val bankClientWithOneInBalance = bankClientWithTwoInBalance.withdraw(1)
+
+            // THEN
+            assertEquals(BankClient(AccountBalance(1)), bankClientWithOneInBalance)
+        }
     }
 
 }
