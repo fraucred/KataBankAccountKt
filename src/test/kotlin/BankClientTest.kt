@@ -118,6 +118,18 @@ class BankClientTest {
             // THEN
             assertEquals(bankClientWithNegativeBalance, bankClientAfterWithdraw)
         }
+
+        @Test
+        fun shouldNotWithdrawNegativeMoneyFromBankAccount() {
+            // GIVEN
+            val bankClientWithOneInBalance = BankClient(AccountBalance(1))
+
+            // WHEN
+            val bankClientAfterWithdraw = bankClientWithOneInBalance.withdraw(-1)
+
+            // THEN
+            assertEquals(bankClientWithOneInBalance, bankClientAfterWithdraw)
+        }
     }
 
 }
