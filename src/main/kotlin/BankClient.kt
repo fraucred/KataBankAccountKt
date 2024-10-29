@@ -3,6 +3,7 @@ data class BankClient(
 ) {
     fun deposit(amount: Int) : BankClient = BankClient(balance.addAmount(amount))
     fun withdraw(amount: Int) : BankClient = BankClient(balance.substractAmount(amount))
+    fun accountHistoryStatement(): AccountHistoryStatement = AccountHistoryStatement(Operation.valueOf("none"))
 }
 
 data class AccountBalance(
@@ -21,4 +22,12 @@ data class AccountBalance(
         }
         return AccountBalance(this.amount - amount)
     }
+}
+
+data class AccountHistoryStatement(
+    val operation: Operation
+)
+
+enum class Operation {
+    DEPOSIT
 }

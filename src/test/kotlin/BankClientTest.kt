@@ -132,4 +132,19 @@ class BankClientTest {
         }
     }
 
+    @Nested
+    inner class AccountHistoryStatement {
+
+        @Test
+        fun shouldReturnAccountHistoryStatementWithSingleDepositOperation() {
+            // GIVEN
+            val newBankClient = BankClient(AccountBalance(0))
+
+            // WHEN
+            val bankClientWithOneInBalance = newBankClient.deposit(1)
+
+            // THEN
+            assertEquals(AccountHistoryStatement(Operation.DEPOSIT), bankClientWithOneInBalance.accountHistoryStatement())
+        }
+    }
 }
