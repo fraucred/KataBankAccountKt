@@ -3,7 +3,9 @@ data class BankClient(
 ) {
     fun deposit(amount: Int) : BankClient = BankClient(balance.addAmount(amount))
     fun withdraw(amount: Int) : BankClient = BankClient(balance.substractAmount(amount))
-    fun accountHistoryStatement(): AccountHistoryStatement = AccountHistoryStatement(Operation.valueOf("none"))
+    fun accountHistoryStatement(): AccountHistoryStatement = AccountHistoryStatement(
+        operation = null
+    )
 }
 
 data class AccountBalance(
@@ -25,8 +27,10 @@ data class AccountBalance(
 }
 
 data class AccountHistoryStatement(
-    val operation: Operation
-)
+    val operation: Operation?
+) {
+
+}
 
 enum class Operation {
     DEPOSIT
