@@ -16,7 +16,7 @@ data class AccountBalance(
     }
 
     fun substractAmount(amount: Int): AccountBalance {
-        if (amount < 0) {
+        if (amount < 0 || this.amount - amount < 0) {
             return this
         }
         return AccountBalance(this.amount - amount)
