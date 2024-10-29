@@ -32,9 +32,16 @@ data class AccountHistoryStatement(
     val balance: AccountBalance = AccountBalance(0),
     val operation: Operation? = null
 ) {
-    fun deposit(amount: Int): AccountHistoryStatement = AccountHistoryStatement(balance.addAmount(amount), Operation.DEPOSIT)
+    fun deposit(amount: Int): AccountHistoryStatement = Operation.DEPOSIT.execute(balance, amount)
 }
 
 enum class Operation {
-    DEPOSIT
+    DEPOSIT;
+
+    fun execute(balance: AccountBalance, amount: Int): AccountHistoryStatement {
+        if (balance == balance.addAmount(amount)) {
+            return AccountHistoryStatement(balance = balance, operation = null)
+        }
+        return AccountHistoryStatement(balance = balance.addAmount(amount), operation = this)
+    }
 }
