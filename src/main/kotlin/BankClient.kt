@@ -2,7 +2,7 @@ data class BankClient(
     val balance: AccountBalance
 ) {
     fun deposit(amount: Int) : BankClient = BankClient(balance.addAmount(amount))
-    fun withdraw(amount: Int) : BankClient = BankClient(AccountBalance(0))
+    fun withdraw(amount: Int) : BankClient = BankClient(balance.substractAmount(amount))
 }
 
 data class AccountBalance(
@@ -13,5 +13,12 @@ data class AccountBalance(
             return this
         }
         return AccountBalance(this.amount + amount)
+    }
+
+    fun substractAmount(amount: Int): AccountBalance {
+        if (amount < 0) {
+            return this
+        }
+        return AccountBalance(this.amount - amount)
     }
 }
