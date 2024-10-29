@@ -36,7 +36,8 @@ data class AccountHistoryStatement(
 }
 
 enum class Operation {
-    DEPOSIT;
+    DEPOSIT,
+    WITHDRAW;
 
     fun execute(balance: AccountBalance, amount: Int): AccountHistoryStatement {
         if (balance == balance.addAmount(amount)) {

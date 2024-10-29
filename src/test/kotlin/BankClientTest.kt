@@ -146,5 +146,17 @@ class BankClientTest {
             // THEN
             assertEquals(AccountHistoryStatement(AccountBalance(1), Operation.DEPOSIT), bankClientWithOneInBalance.accountHistoryStatement())
         }
+
+        @Test
+        fun shouldReturnAccountHistoryStatementWithSingleWithdrawOperation() {
+            // GIVEN
+            val newBankClient = BankClient(AccountBalance(1), AccountHistoryStatement(balance = AccountBalance(1)))
+
+            // WHEN
+            val bankClientWithEmptyBalance = newBankClient.withdraw(1)
+
+            // THEN
+            assertEquals(AccountHistoryStatement(AccountBalance(0), Operation.WITHDRAW), bankClientWithEmptyBalance.accountHistoryStatement())
+        }
     }
 }
