@@ -150,13 +150,25 @@ class BankClientTest {
         @Test
         fun shouldReturnAccountHistoryStatementWithSingleWithdrawOperation() {
             // GIVEN
-            val newBankClient = BankClient(AccountHistoryStatement(balance = AccountBalance(1)))
+            val bankClientWithOneInBalance = BankClient(AccountHistoryStatement(balance = AccountBalance(1)))
 
             // WHEN
-            val bankClientWithEmptyBalance = newBankClient.withdraw(1)
+            val bankClientWithEmptyBalance = bankClientWithOneInBalance.withdraw(1)
 
             // THEN
             assertEquals(AccountHistoryStatement(AccountBalance(0), Operation.WITHDRAW), bankClientWithEmptyBalance.accountHistoryStatement())
+        }
+
+        @Test
+        fun shouldReturnAccountHistoryStatementWithDepositThenWithdrawOperations() {
+            // GIVEN
+            val bankClientWithOneInBalance = BankClient(AccountHistoryStatement(balance = AccountBalance(1), operation = Operation.DEPOSIT))
+
+            // WHEN
+            val bankClientWithEmptyBalance = bankClientWithOneInBalance.withdraw(1)
+
+            // THEN
+            assertEquals(AccountHistoryStatement(AccountBalance(0), TODO()), bankClientWithEmptyBalance.accountHistoryStatement())
         }
     }
 }
