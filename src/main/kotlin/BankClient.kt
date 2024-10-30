@@ -1,14 +1,11 @@
 data class BankClient(
-    val balance: AccountBalance,
     val accountHistory: AccountHistoryStatement = AccountHistoryStatement(operation = null)
 ) {
     fun deposit(amount: Int): BankClient = BankClient(
-        balance = balance.addAmount(amount),
         accountHistory = accountHistory.deposit(amount)
     )
 
     fun withdraw(amount: Int): BankClient = BankClient(
-        balance = balance.subtractAmount(amount),
         accountHistory = accountHistory.withdraw(amount)
     )
 
