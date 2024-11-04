@@ -1,5 +1,8 @@
 # KataBankAccountKt
 
+## How to launch tests
+In KataBankAccountKt directory, run `./gradlew test` command
+
 ## Add kata bank account description
 Bank account kata
 
