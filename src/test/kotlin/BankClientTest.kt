@@ -244,7 +244,7 @@ class BankClientTest {
                         )
                     )
                 ),
-                bankClientWithOneInBalance.accountHistory()
+                bankClientWithOneInBalance.accountHistory
             )
         }
 
@@ -270,7 +270,7 @@ class BankClientTest {
                         )
                     )
                 ),
-                bankClientWithEmptyBalance.accountHistory()
+                bankClientWithEmptyBalance.accountHistory
             )
         }
 
@@ -300,7 +300,42 @@ class BankClientTest {
                         )
                     )
                 ),
-                bankClientWithEmptyBalance.accountHistory()
+                bankClientWithEmptyBalance.accountHistory
+            )
+        }
+
+        @Test
+        fun shouldReturnFormattedAccountHistory() {
+            // GIVEN
+            val bankClient = BankClient(
+                AccountHistory(
+                    statements = linkedSetOf(
+                        AccountHistoryStatement(
+                            balance = AccountBalance(0),
+                            operation = Operation.DEPOSIT,
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
+                        ),
+                        AccountHistoryStatement(
+                            balance = AccountBalance(1),
+                            operation = Operation.WITHDRAW,
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 27)
+                        ),
+                        AccountHistoryStatement(
+                            balance = AccountBalance(2),
+                            operation = Operation.DEPOSIT,
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 28)
+                        )
+                    )
+                )
+            )
+
+            // WHEN
+            val formattedAccountHistory = bankClient.accountHistory.formattedAccountHistory()
+
+            // THEN
+            assertEquals(
+                "DEPOSIT on 2024-01-01T10:26 => new balance 0 ### WITHDRAW on 2024-01-01T10:27 => new balance 1 ### DEPOSIT on 2024-01-01T10:28 => new balance 2",
+                formattedAccountHistory
             )
         }
     }

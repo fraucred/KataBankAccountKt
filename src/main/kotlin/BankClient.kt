@@ -11,8 +11,6 @@ data class BankClient(
     fun withdraw(amount: Int): BankClient = BankClient(
         accountHistory = accountHistory.withdraw(amount)
     )
-
-    fun accountHistory(): AccountHistory = accountHistory
 }
 
 data class AccountHistory(
@@ -30,7 +28,7 @@ data class AccountHistory(
         }
     )
 
-    fun checkOperationHistory(): String {
+    fun formattedAccountHistory(): String {
         return statements
             .filter { it.operation != null && it.operationDateTime != null }
             .map { "${it.operation} on ${it.operationDateTime} => new balance ${it.balance}" }

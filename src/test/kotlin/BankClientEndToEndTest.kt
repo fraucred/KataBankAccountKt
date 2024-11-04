@@ -22,7 +22,7 @@ class BankClientEndToEndTest {
     }
 
     @Test
-    fun `should apply operations on a bank account and see history`() {
+    fun `should apply deposit and withdrawal operations on a bank account and see history`() {
         // GIVEN
         val bankClient = BankClient()
 
@@ -38,7 +38,7 @@ class BankClientEndToEndTest {
         // THEN
         assertEquals(
             "DEPOSIT ",
-            emptyBalanceBankClient.accountHistory.checkOperationHistory()
+            emptyBalanceBankClient.accountHistory.formattedAccountHistory()
         )
     }
 }
