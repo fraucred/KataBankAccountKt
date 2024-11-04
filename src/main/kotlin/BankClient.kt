@@ -1,3 +1,5 @@
+import java.util.Date
+
 data class BankClient(
     val accountHistory: AccountHistory = AccountHistory()
 ) {
@@ -52,18 +54,19 @@ enum class Operation {
 
     fun execute(balance: AccountBalance, amount: Int): AccountHistoryStatement {
         if (this == DEPOSIT && balance.addAmount(amount) != balance) {
-            return AccountHistoryStatement(balance = balance.addAmount(amount), operation = this)
+            return AccountHistoryStatement(balance = balance.addAmount(amount), operation = this, operationDate = Date())
         }
         if (this == WITHDRAW && balance.subtractAmount(amount) != balance) {
-            return AccountHistoryStatement(balance = balance.subtractAmount(amount), operation = this)
+            return AccountHistoryStatement(balance = balance.subtractAmount(amount), operation = this, operationDate = Date())
         }
-        return AccountHistoryStatement(balance = balance, operation = null)
+        return AccountHistoryStatement(balance = balance, operation = null, operationDate = null)
     }
 }
 
 data class AccountHistoryStatement(
     val balance: AccountBalance = AccountBalance(0),
-    val operation: Operation? = null
+    val operation: Operation? = null,
+    val operationDate: Date? = null
 ) {
     fun deposit(amount: Int): AccountHistoryStatement = Operation.DEPOSIT.execute(balance, amount)
     fun withdraw(amount: Int): AccountHistoryStatement = Operation.WITHDRAW.execute(balance, amount)

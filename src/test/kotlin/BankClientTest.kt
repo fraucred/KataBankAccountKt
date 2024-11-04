@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
+import java.util.Date
 import kotlin.test.Test
 
 class BankClientTest {
@@ -21,7 +22,11 @@ class BankClientTest {
                     AccountHistory(
                         statements = linkedSetOf(
                             AccountHistoryStatement(),
-                            AccountHistoryStatement(balance = AccountBalance(1), operation = Operation.DEPOSIT)
+                            AccountHistoryStatement(
+                                balance = AccountBalance(1),
+                                operation = Operation.DEPOSIT,
+                                operationDate = Date()
+                            )
                         )
                     )
                 ),
@@ -45,7 +50,11 @@ class BankClientTest {
                     AccountHistory(
                         statements = linkedSetOf(
                             AccountHistoryStatement(balance = AccountBalance(1)),
-                            AccountHistoryStatement(balance = AccountBalance(2), operation = Operation.DEPOSIT)
+                            AccountHistoryStatement(
+                                balance = AccountBalance(2),
+                                operation = Operation.DEPOSIT,
+                                operationDate = Date()
+                            )
                         )
                     )
                 ),
@@ -69,7 +78,11 @@ class BankClientTest {
                     AccountHistory(
                         statements = linkedSetOf(
                             AccountHistoryStatement(balance = AccountBalance(2)),
-                            AccountHistoryStatement(balance = AccountBalance(3), operation = Operation.DEPOSIT)
+                            AccountHistoryStatement(
+                                balance = AccountBalance(3),
+                                operation = Operation.DEPOSIT,
+                                operationDate = Date()
+                            )
                         )
                     )
                 ),
@@ -104,8 +117,12 @@ class BankClientTest {
                 BankClient(
                     AccountHistory(
                         statements = linkedSetOf(
-                            AccountHistoryStatement(AccountBalance(-1)),
-                            AccountHistoryStatement(AccountBalance(0) ,Operation.DEPOSIT)
+                            AccountHistoryStatement(balance = AccountBalance(-1)),
+                            AccountHistoryStatement(
+                                balance = AccountBalance(0),
+                                operation = Operation.DEPOSIT,
+                                operationDate = Date()
+                            )
                         )
                     )
                 ),
@@ -145,7 +162,11 @@ class BankClientTest {
                     AccountHistory(
                         statements = linkedSetOf(
                             AccountHistoryStatement(balance = AccountBalance(2)),
-                            AccountHistoryStatement(balance = AccountBalance(1), operation = Operation.WITHDRAW)
+                            AccountHistoryStatement(
+                                balance = AccountBalance(1),
+                                operation = Operation.WITHDRAW,
+                                operationDate = Date()
+                            )
                         )
                     )
                 ),
@@ -203,11 +224,17 @@ class BankClientTest {
 
             // THEN
             assertEquals(
-                setOf(
-                    AccountHistoryStatement(AccountBalance(0), null),
-                    AccountHistoryStatement(AccountBalance(1), Operation.DEPOSIT)
+                AccountHistory(
+                    statements = linkedSetOf(
+                        AccountHistoryStatement(balance = AccountBalance(0)),
+                        AccountHistoryStatement(
+                            balance = AccountBalance(1),
+                            operation = Operation.DEPOSIT,
+                            operationDate = Date()
+                        )
+                    )
                 ),
-                bankClientWithOneInBalance.accountHistory().statements
+                bankClientWithOneInBalance.accountHistory()
             )
         }
 
@@ -225,8 +252,12 @@ class BankClientTest {
             assertEquals(
                 AccountHistory(
                     statements = linkedSetOf(
-                        AccountHistoryStatement(AccountBalance(1)),
-                        AccountHistoryStatement(AccountBalance(0), Operation.WITHDRAW)
+                        AccountHistoryStatement(balance = AccountBalance(1)),
+                        AccountHistoryStatement(
+                            balance = AccountBalance(0),
+                            operation = Operation.WITHDRAW,
+                            operationDate = Date()
+                        )
                     )
                 ),
                 bankClientWithEmptyBalance.accountHistory()
@@ -252,7 +283,11 @@ class BankClientTest {
                 AccountHistory(
                     statements = linkedSetOf(
                         AccountHistoryStatement(balance = AccountBalance(1), operation = Operation.DEPOSIT),
-                        AccountHistoryStatement(balance = AccountBalance(0), operation = Operation.WITHDRAW)
+                        AccountHistoryStatement(
+                            balance = AccountBalance(0),
+                            operation = Operation.WITHDRAW,
+                            operationDate = Date()
+                        )
                     )
                 ),
                 bankClientWithEmptyBalance.accountHistory()
