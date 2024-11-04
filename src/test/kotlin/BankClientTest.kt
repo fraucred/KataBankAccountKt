@@ -1,9 +1,19 @@
+import io.mockk.every
+import io.mockk.mockkObject
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
-import java.util.Date
+import time.Time
+import java.time.LocalDateTime
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class BankClientTest {
+
+    @BeforeTest
+    fun setUp() {
+        mockkObject(Time)
+        every { Time.getCurrentTime() } returns LocalDateTime.of(2024, 1, 1, 10, 26)
+    }
 
     @Nested
     inner class Deposit {
@@ -25,7 +35,7 @@ class BankClientTest {
                             AccountHistoryStatement(
                                 balance = AccountBalance(1),
                                 operation = Operation.DEPOSIT,
-                                operationDate = Date()
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
                             )
                         )
                     )
@@ -53,7 +63,7 @@ class BankClientTest {
                             AccountHistoryStatement(
                                 balance = AccountBalance(2),
                                 operation = Operation.DEPOSIT,
-                                operationDate = Date()
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
                             )
                         )
                     )
@@ -81,7 +91,7 @@ class BankClientTest {
                             AccountHistoryStatement(
                                 balance = AccountBalance(3),
                                 operation = Operation.DEPOSIT,
-                                operationDate = Date()
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
                             )
                         )
                     )
@@ -121,7 +131,7 @@ class BankClientTest {
                             AccountHistoryStatement(
                                 balance = AccountBalance(0),
                                 operation = Operation.DEPOSIT,
-                                operationDate = Date()
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
                             )
                         )
                     )
@@ -165,7 +175,7 @@ class BankClientTest {
                             AccountHistoryStatement(
                                 balance = AccountBalance(1),
                                 operation = Operation.WITHDRAW,
-                                operationDate = Date()
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
                             )
                         )
                     )
@@ -230,7 +240,7 @@ class BankClientTest {
                         AccountHistoryStatement(
                             balance = AccountBalance(1),
                             operation = Operation.DEPOSIT,
-                            operationDate = Date()
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
                         )
                     )
                 ),
@@ -256,7 +266,7 @@ class BankClientTest {
                         AccountHistoryStatement(
                             balance = AccountBalance(0),
                             operation = Operation.WITHDRAW,
-                            operationDate = Date()
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
                         )
                     )
                 ),
@@ -286,7 +296,7 @@ class BankClientTest {
                         AccountHistoryStatement(
                             balance = AccountBalance(0),
                             operation = Operation.WITHDRAW,
-                            operationDate = Date()
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
                         )
                     )
                 ),
