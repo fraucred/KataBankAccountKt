@@ -35,7 +35,8 @@ class BankClientTest {
                             AccountHistoryStatement(
                                 balance = AccountBalance(1),
                                 operation = Operation.DEPOSIT,
-                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26),
+                                operationAmount = 1
                             )
                         )
                     )
@@ -63,7 +64,8 @@ class BankClientTest {
                             AccountHistoryStatement(
                                 balance = AccountBalance(2),
                                 operation = Operation.DEPOSIT,
-                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26),
+                                operationAmount = 1
                             )
                         )
                     )
@@ -91,7 +93,8 @@ class BankClientTest {
                             AccountHistoryStatement(
                                 balance = AccountBalance(3),
                                 operation = Operation.DEPOSIT,
-                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26),
+                                operationAmount = 1
                             )
                         )
                     )
@@ -131,7 +134,8 @@ class BankClientTest {
                             AccountHistoryStatement(
                                 balance = AccountBalance(0),
                                 operation = Operation.DEPOSIT,
-                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26),
+                                operationAmount = 1
                             )
                         )
                     )
@@ -175,7 +179,8 @@ class BankClientTest {
                             AccountHistoryStatement(
                                 balance = AccountBalance(1),
                                 operation = Operation.WITHDRAW,
-                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26),
+                                operationAmount = 1
                             )
                         )
                     )
@@ -240,7 +245,8 @@ class BankClientTest {
                         AccountHistoryStatement(
                             balance = AccountBalance(1),
                             operation = Operation.DEPOSIT,
-                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26),
+                            operationAmount = 1
                         )
                     )
                 ),
@@ -266,7 +272,8 @@ class BankClientTest {
                         AccountHistoryStatement(
                             balance = AccountBalance(0),
                             operation = Operation.WITHDRAW,
-                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26),
+                            operationAmount = 1
                         )
                     )
                 ),
@@ -296,7 +303,8 @@ class BankClientTest {
                         AccountHistoryStatement(
                             balance = AccountBalance(0),
                             operation = Operation.WITHDRAW,
-                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26),
+                            operationAmount = 1
                         )
                     )
                 ),
@@ -311,19 +319,25 @@ class BankClientTest {
                 AccountHistory(
                     statements = linkedSetOf(
                         AccountHistoryStatement(
-                            balance = AccountBalance(0),
-                            operation = Operation.DEPOSIT,
-                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26)
+                            balance = AccountBalance(100),
                         ),
                         AccountHistoryStatement(
-                            balance = AccountBalance(1),
+                            balance = AccountBalance(101),
+                            operation = Operation.DEPOSIT,
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26),
+                            operationAmount = 1
+                        ),
+                        AccountHistoryStatement(
+                            balance = AccountBalance(81),
                             operation = Operation.WITHDRAW,
-                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 27)
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 27),
+                            operationAmount = 20
                         ),
                         AccountHistoryStatement(
-                            balance = AccountBalance(2),
+                            balance = AccountBalance(96),
                             operation = Operation.DEPOSIT,
-                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 28)
+                            operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 28),
+                            operationAmount = 15
                         )
                     )
                 )
@@ -334,7 +348,7 @@ class BankClientTest {
 
             // THEN
             assertEquals(
-                "DEPOSIT on 2024-01-01T10:26 => new balance 0 ### WITHDRAW on 2024-01-01T10:27 => new balance 1 ### DEPOSIT on 2024-01-01T10:28 => new balance 2",
+                "DEPOSIT 1 at 2024-01-01T10:26 => new balance 101 ### WITHDRAW 20 at 2024-01-01T10:27 => new balance 81 ### DEPOSIT 15 at 2024-01-01T10:28 => new balance 96",
                 formattedAccountHistory
             )
         }

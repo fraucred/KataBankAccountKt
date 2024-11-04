@@ -37,7 +37,7 @@ class BankClientEndToEndTest {
 
         // THEN
         assertEquals(
-            "DEPOSIT ",
+            "DEPOSIT 100 at 2024-01-01T12:33 => new balance 100 ### WITHDRAW 50 at 2024-01-02T12:33 => new balance 50 ### DEPOSIT 200 at 2024-01-03T12:33 => new balance 250 ### DEPOSIT 150 at 2024-01-04T12:33 => new balance 400 ### WITHDRAW 400 at 2024-01-05T12:33 => new balance 0",
             emptyBalanceBankClient.accountHistory.formattedAccountHistory()
         )
     }

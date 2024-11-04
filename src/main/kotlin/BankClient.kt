@@ -31,7 +31,7 @@ data class AccountHistory(
     fun formattedAccountHistory(): String {
         return statements
             .filter { it.operation != null && it.operationDateTime != null }
-            .map { "${it.operation} on ${it.operationDateTime} => new balance ${it.balance}" }
+            .map { "${it.operation} ${it.operationAmount} at ${it.operationDateTime} => new balance ${it.balance}" }
             .joinToString(separator = " ### ")
     }
 }
@@ -64,19 +64,35 @@ enum class Operation {
 
     fun execute(balance: AccountBalance, amount: Int): AccountHistoryStatement {
         if (this == DEPOSIT && balance.addAmount(amount) != balance) {
-            return AccountHistoryStatement(balance = balance.addAmount(amount), operation = this, operationDateTime = Time.getCurrentTime())
+            return AccountHistoryStatement(
+                balance = balance.addAmount(amount),
+                operation = this,
+                operationDateTime = Time.getCurrentTime(),
+                operationAmount = amount
+            )
         }
         if (this == WITHDRAW && balance.subtractAmount(amount) != balance) {
-            return AccountHistoryStatement(balance = balance.subtractAmount(amount), operation = this, operationDateTime = Time.getCurrentTime())
+            return AccountHistoryStatement(
+                balance = balance.subtractAmount(amount),
+                operation = this,
+                operationDateTime = Time.getCurrentTime(),
+                operationAmount = amount
+            )
         }
-        return AccountHistoryStatement(balance = balance, operation = null, operationDateTime = null)
+        return AccountHistoryStatement(
+            balance = balance,
+            operation = null,
+            operationDateTime = null,
+            operationAmount = null
+        )
     }
 }
 
 data class AccountHistoryStatement(
     val balance: AccountBalance = AccountBalance(0),
     val operation: Operation? = null,
-    val operationDateTime: LocalDateTime? = null
+    val operationDateTime: LocalDateTime? = null,
+    val operationAmount: Int? = null
 ) {
     fun deposit(amount: Int): AccountHistoryStatement = Operation.DEPOSIT.execute(balance, amount)
     fun withdraw(amount: Int): AccountHistoryStatement = Operation.WITHDRAW.execute(balance, amount)
