@@ -1,5 +1,5 @@
 data class BankClient(
-    val accountHistory: AccountHistoryStatement = AccountHistoryStatement(operation = null)
+    val accountHistory: AccountHistory = AccountHistory()
 ) {
     fun deposit(amount: Int): BankClient = BankClient(
         accountHistory = accountHistory.deposit(amount)
@@ -9,7 +9,23 @@ data class BankClient(
         accountHistory = accountHistory.withdraw(amount)
     )
 
-    fun accountHistoryStatement(): AccountHistoryStatement = accountHistory
+    fun accountHistory(): AccountHistory = accountHistory
+}
+
+data class AccountHistory(
+    val statements: LinkedHashSet<AccountHistoryStatement> = linkedSetOf(AccountHistoryStatement())
+) {
+    fun deposit(amount: Int): AccountHistory = AccountHistory(
+        statements = LinkedHashSet(statements).apply {
+            add(AccountHistoryStatement(balance = statements.last().balance).deposit(amount))
+        }
+    )
+
+    fun withdraw(amount: Int): AccountHistory = AccountHistory(
+        statements = LinkedHashSet(statements).apply {
+            add(AccountHistoryStatement(balance = statements.last().balance).withdraw(amount))
+        }
+    )
 }
 
 data class AccountBalance(
@@ -30,14 +46,6 @@ data class AccountBalance(
     }
 }
 
-data class AccountHistoryStatement(
-    val balance: AccountBalance = AccountBalance(0),
-    val operation: Operation? = null
-) {
-    fun deposit(amount: Int): AccountHistoryStatement = Operation.DEPOSIT.execute(balance, amount)
-    fun withdraw(amount: Int): AccountHistoryStatement = Operation.WITHDRAW.execute(balance, amount)
-}
-
 enum class Operation {
     DEPOSIT,
     WITHDRAW;
@@ -51,4 +59,12 @@ enum class Operation {
         }
         return AccountHistoryStatement(balance = balance, operation = null)
     }
+}
+
+data class AccountHistoryStatement(
+    val balance: AccountBalance = AccountBalance(0),
+    val operation: Operation? = null
+) {
+    fun deposit(amount: Int): AccountHistoryStatement = Operation.DEPOSIT.execute(balance, amount)
+    fun withdraw(amount: Int): AccountHistoryStatement = Operation.WITHDRAW.execute(balance, amount)
 }

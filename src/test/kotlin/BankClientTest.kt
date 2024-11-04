@@ -10,61 +10,107 @@ class BankClientTest {
         @Test
         fun shouldDepositMoneyInEmptyBankAccount() {
             // GIVEN
-            val newBankClient = BankClient(AccountHistoryStatement())
+            val newBankClient = BankClient(AccountHistory())
 
             // WHEN
             val bankClientWithOneInBalance = newBankClient.deposit(1)
 
             // THEN
-            assertEquals(BankClient(AccountHistoryStatement(AccountBalance(1), Operation.DEPOSIT)), bankClientWithOneInBalance)
+            assertEquals(
+                BankClient(
+                    AccountHistory(
+                        statements = linkedSetOf(
+                            AccountHistoryStatement(),
+                            AccountHistoryStatement(balance = AccountBalance(1), operation = Operation.DEPOSIT)
+                        )
+                    )
+                ),
+                bankClientWithOneInBalance
+            )
         }
 
         @Test
         fun shouldDepositMoneyInBankAccountWithOneInBalance() {
             // GIVEN
-            val bankClientWithOneInBalance = BankClient(AccountHistoryStatement(balance = AccountBalance(1)))
+            val bankClientWithOneInBalance = BankClient(
+                AccountHistory(statements = linkedSetOf(AccountHistoryStatement(balance = AccountBalance(1))))
+            )
 
             // WHEN
             val bankClientWithTwoInBalance = bankClientWithOneInBalance.deposit(1)
 
             // THEN
-            assertEquals(BankClient(AccountHistoryStatement(AccountBalance(2), Operation.DEPOSIT)), bankClientWithTwoInBalance)
+            assertEquals(
+                BankClient(
+                    AccountHistory(
+                        statements = linkedSetOf(
+                            AccountHistoryStatement(balance = AccountBalance(1)),
+                            AccountHistoryStatement(balance = AccountBalance(2), operation = Operation.DEPOSIT)
+                        )
+                    )
+                ),
+                bankClientWithTwoInBalance
+            )
         }
 
         @Test
         fun shouldDepositMoneyInBankAccountWithTwoInBalance() {
             // GIVEN
-            val bankClientWithTwoInBalance = BankClient(AccountHistoryStatement(balance = AccountBalance(2)))
+            val bankClientWithTwoInBalance = BankClient(
+                AccountHistory(statements = linkedSetOf(AccountHistoryStatement(balance = AccountBalance(2))))
+            )
 
             // WHEN
             val bankClientWithThreeInBalance = bankClientWithTwoInBalance.deposit(1)
 
             // THEN
-            assertEquals(BankClient(AccountHistoryStatement(AccountBalance(3), Operation.DEPOSIT)), bankClientWithThreeInBalance)
+            assertEquals(
+                BankClient(
+                    AccountHistory(
+                        statements = linkedSetOf(
+                            AccountHistoryStatement(balance = AccountBalance(2)),
+                            AccountHistoryStatement(balance = AccountBalance(3), operation = Operation.DEPOSIT)
+                        )
+                    )
+                ),
+                bankClientWithThreeInBalance
+            )
         }
 
         @Test
         fun shouldNotDepositNegativeMoneyInBankAccount() {
             // GIVEN
-            val newBankClient = BankClient(AccountHistoryStatement())
+            val newBankClient = BankClient(AccountHistory())
 
             // WHEN
             val bankClientAfterDeposit = newBankClient.deposit(-1)
 
             // THEN
-            assertEquals(BankClient(AccountHistoryStatement()), bankClientAfterDeposit)
+            assertEquals(BankClient(AccountHistory()), bankClientAfterDeposit)
         }
 
         @Test
         fun shouldDepositMoneyInBankAccountWithNegativeBalance() {
             // GIVEN
-            val bankClientWithNegativeBalance = BankClient(AccountHistoryStatement(balance = AccountBalance(-1)))
+            val bankClientWithNegativeBalance = BankClient(
+                AccountHistory(statements = linkedSetOf(AccountHistoryStatement(balance = AccountBalance(-1))))
+            )
 
             // WHEN
             val bankClientAfterDeposit = bankClientWithNegativeBalance.deposit(1)
 
             // THEN
-            assertEquals(BankClient(AccountHistoryStatement(AccountBalance(0) ,Operation.DEPOSIT)), bankClientAfterDeposit)
+            assertEquals(
+                BankClient(
+                    AccountHistory(
+                        statements = linkedSetOf(
+                            AccountHistoryStatement(AccountBalance(-1)),
+                            AccountHistoryStatement(AccountBalance(0) ,Operation.DEPOSIT)
+                        )
+                    )
+                ),
+                bankClientAfterDeposit
+            )
         }
     }
 
@@ -74,43 +120,55 @@ class BankClientTest {
         @Test
         fun shouldWithdrawMoneyFromNotEmptyBankAccount() {
             // GIVEN
-            val bankClientWithOneInBalance = BankClient(AccountHistoryStatement())
+            val bankClientWithOneInBalance = BankClient(AccountHistory())
 
             // WHEN
             val bankClientWithZeroInBalance = bankClientWithOneInBalance.withdraw(1)
 
             // THEN
-            assertEquals(BankClient(AccountHistoryStatement()), bankClientWithZeroInBalance)
+            assertEquals(BankClient(AccountHistory()), bankClientWithZeroInBalance)
         }
 
         @Test
         fun shouldWithdrawSomeMoneyFromBankAccountWithTwoInBalance() {
             // GIVEN
-            val bankClientWithTwoInBalance = BankClient(AccountHistoryStatement())
+            val bankClientWithTwoInBalance = BankClient(
+                AccountHistory(statements = linkedSetOf(AccountHistoryStatement(balance = AccountBalance(2))))
+            )
 
             // WHEN
             val bankClientWithOneInBalance = bankClientWithTwoInBalance.withdraw(1)
 
             // THEN
-            assertEquals(BankClient(AccountHistoryStatement()), bankClientWithOneInBalance)
+            assertEquals(
+                BankClient(
+                    AccountHistory(
+                        statements = linkedSetOf(
+                            AccountHistoryStatement(balance = AccountBalance(2)),
+                            AccountHistoryStatement(balance = AccountBalance(1), operation = Operation.WITHDRAW)
+                        )
+                    )
+                ),
+                bankClientWithOneInBalance
+            )
         }
 
         @Test
         fun shouldWithdrawAllMoneyFromBankAccountWithTwoInBalance() {
             // GIVEN
-            val bankClientWithTwoInBalance = BankClient(AccountHistoryStatement())
+            val bankClientWithTwoInBalance = BankClient(AccountHistory())
 
             // WHEN
             val bankClientWithEmptyBalance = bankClientWithTwoInBalance.withdraw(2)
 
             // THEN
-            assertEquals(BankClient(AccountHistoryStatement()), bankClientWithEmptyBalance)
+            assertEquals(BankClient(AccountHistory()), bankClientWithEmptyBalance)
         }
 
         @Test
         fun shouldNotWithdrawSomeMoneyFromBankAccountWithNegativeBalance() {
             // GIVEN
-            val bankClientWithNegativeBalance = BankClient(AccountHistoryStatement())
+            val bankClientWithNegativeBalance = BankClient(AccountHistory())
 
             // WHEN
             val bankClientAfterWithdraw = bankClientWithNegativeBalance.withdraw(2)
@@ -122,7 +180,7 @@ class BankClientTest {
         @Test
         fun shouldNotWithdrawNegativeMoneyFromBankAccount() {
             // GIVEN
-            val bankClientWithOneInBalance = BankClient(AccountHistoryStatement())
+            val bankClientWithOneInBalance = BankClient(AccountHistory())
 
             // WHEN
             val bankClientAfterWithdraw = bankClientWithOneInBalance.withdraw(-1)
@@ -133,42 +191,72 @@ class BankClientTest {
     }
 
     @Nested
-    inner class BankAccountHistoryStatement {
+    inner class BankAccountHistory {
 
         @Test
         fun shouldReturnAccountHistoryStatementWithSingleDepositOperation() {
             // GIVEN
-            val newBankClient = BankClient(AccountHistoryStatement())
+            val newBankClient = BankClient(AccountHistory())
 
             // WHEN
             val bankClientWithOneInBalance = newBankClient.deposit(1)
 
             // THEN
-            assertEquals(AccountHistoryStatement(AccountBalance(1), Operation.DEPOSIT), bankClientWithOneInBalance.accountHistoryStatement())
+            assertEquals(
+                setOf(
+                    AccountHistoryStatement(AccountBalance(0), null),
+                    AccountHistoryStatement(AccountBalance(1), Operation.DEPOSIT)
+                ),
+                bankClientWithOneInBalance.accountHistory().statements
+            )
         }
 
         @Test
         fun shouldReturnAccountHistoryStatementWithSingleWithdrawOperation() {
             // GIVEN
-            val bankClientWithOneInBalance = BankClient(AccountHistoryStatement(balance = AccountBalance(1)))
+            val bankClientWithOneInBalance = BankClient(
+                AccountHistory(statements = linkedSetOf(AccountHistoryStatement(balance = AccountBalance(1))))
+            )
 
             // WHEN
             val bankClientWithEmptyBalance = bankClientWithOneInBalance.withdraw(1)
 
             // THEN
-            assertEquals(AccountHistoryStatement(AccountBalance(0), Operation.WITHDRAW), bankClientWithEmptyBalance.accountHistoryStatement())
+            assertEquals(
+                AccountHistory(
+                    statements = linkedSetOf(
+                        AccountHistoryStatement(AccountBalance(1)),
+                        AccountHistoryStatement(AccountBalance(0), Operation.WITHDRAW)
+                    )
+                ),
+                bankClientWithEmptyBalance.accountHistory()
+            )
         }
 
         @Test
         fun shouldReturnAccountHistoryStatementWithDepositThenWithdrawOperations() {
             // GIVEN
-            val bankClientWithOneInBalance = BankClient(AccountHistoryStatement(balance = AccountBalance(1), operation = Operation.DEPOSIT))
+            val bankClientWithOneInBalance = BankClient(
+                AccountHistory(
+                    statements = linkedSetOf(
+                        AccountHistoryStatement(balance = AccountBalance(1), operation = Operation.DEPOSIT)
+                    )
+                )
+            )
 
             // WHEN
             val bankClientWithEmptyBalance = bankClientWithOneInBalance.withdraw(1)
 
             // THEN
-            assertEquals(AccountHistoryStatement(AccountBalance(0), TODO()), bankClientWithEmptyBalance.accountHistoryStatement())
+            assertEquals(
+                AccountHistory(
+                    statements = linkedSetOf(
+                        AccountHistoryStatement(balance = AccountBalance(1), operation = Operation.DEPOSIT),
+                        AccountHistoryStatement(balance = AccountBalance(0), operation = Operation.WITHDRAW)
+                    )
+                ),
+                bankClientWithEmptyBalance.accountHistory()
+            )
         }
     }
 }
