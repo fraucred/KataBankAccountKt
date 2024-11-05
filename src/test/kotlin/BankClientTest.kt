@@ -151,13 +151,30 @@ class BankClientTest {
         @Test
         fun shouldWithdrawMoneyFromNotEmptyBankAccount() {
             // GIVEN
-            val bankClientWithOneInBalance = BankClient(AccountHistory())
+            val bankClientWithOneInBalance = BankClient(AccountHistory(
+                statements = linkedSetOf(AccountHistoryStatement(balance = AccountBalance(1)))
+            ))
 
             // WHEN
             val bankClientWithZeroInBalance = bankClientWithOneInBalance.withdraw(1)
 
             // THEN
-            assertEquals(BankClient(AccountHistory()), bankClientWithZeroInBalance)
+            assertEquals(
+                BankClient(
+                    AccountHistory(
+                        statements = linkedSetOf(
+                            AccountHistoryStatement(balance = AccountBalance(1)),
+                            AccountHistoryStatement(
+                                balance = AccountBalance(0),
+                                operation = Operation.WITHDRAW,
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26),
+                                operationAmount = 1
+                            )
+                        )
+                    )
+                ),
+                bankClientWithZeroInBalance
+            )
         }
 
         @Test
@@ -192,19 +209,38 @@ class BankClientTest {
         @Test
         fun shouldWithdrawAllMoneyFromBankAccountWithTwoInBalance() {
             // GIVEN
-            val bankClientWithTwoInBalance = BankClient(AccountHistory())
+            val bankClientWithTwoInBalance = BankClient(AccountHistory(
+                statements = linkedSetOf(AccountHistoryStatement(balance = AccountBalance(2)))
+            ))
 
             // WHEN
             val bankClientWithEmptyBalance = bankClientWithTwoInBalance.withdraw(2)
 
             // THEN
-            assertEquals(BankClient(AccountHistory()), bankClientWithEmptyBalance)
+            assertEquals(
+                BankClient(
+                    AccountHistory(
+                        statements = linkedSetOf(
+                            AccountHistoryStatement(balance = AccountBalance(2)),
+                            AccountHistoryStatement(
+                                balance = AccountBalance(0),
+                                operation = Operation.WITHDRAW,
+                                operationDateTime = LocalDateTime.of(2024, 1, 1, 10, 26),
+                                operationAmount = 2
+                            )
+                        )
+                    )
+                ),
+                bankClientWithEmptyBalance
+            )
         }
 
         @Test
         fun shouldNotWithdrawSomeMoneyFromBankAccountWithNegativeBalance() {
             // GIVEN
-            val bankClientWithNegativeBalance = BankClient(AccountHistory())
+            val bankClientWithNegativeBalance = BankClient(AccountHistory(
+                statements = linkedSetOf(AccountHistoryStatement(balance = AccountBalance(-1)))
+            ))
 
             // WHEN
             val bankClientAfterWithdraw = bankClientWithNegativeBalance.withdraw(2)
@@ -216,7 +252,9 @@ class BankClientTest {
         @Test
         fun shouldNotWithdrawNegativeMoneyFromBankAccount() {
             // GIVEN
-            val bankClientWithOneInBalance = BankClient(AccountHistory())
+            val bankClientWithOneInBalance = BankClient(AccountHistory(
+                statements = linkedSetOf(AccountHistoryStatement(balance = AccountBalance(1)))
+            ))
 
             // WHEN
             val bankClientAfterWithdraw = bankClientWithOneInBalance.withdraw(-1)
